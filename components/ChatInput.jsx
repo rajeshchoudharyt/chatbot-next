@@ -2,7 +2,7 @@
 
 import toast from "react-hot-toast";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { socket } from "@/utils/socket";
 
@@ -24,7 +24,10 @@ export default function ChatInput({ conversations, setConversations }) {
         isReadyToConnect.current = true;
     }
 
+    const construstor = useMemo(async () => await socket, []);
+
     useEffect(() => {
+        construstor;
         socket.io.opts.query = { sessionId };
         socket.on("connect", onConnect);
         socket.on("disconnect", onDisconnect);

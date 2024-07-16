@@ -12,7 +12,6 @@ async function get() {
         auth: { token },
     });
 }
-
 get();
 
 export { socket };
