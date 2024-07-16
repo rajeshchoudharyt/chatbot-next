@@ -23,11 +23,8 @@ export default function ChatInput({ conversations, setConversations }) {
         setIsConnected(false);
         isReadyToConnect.current = true;
     }
-
-    const construstor = useMemo(async () => await socket, []);
-
+    
     useEffect(() => {
-        construstor;
         socket.io.opts.query = { sessionId };
         socket.on("connect", onConnect);
         socket.on("disconnect", onDisconnect);
