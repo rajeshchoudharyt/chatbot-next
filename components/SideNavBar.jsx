@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { getAuthHeader, handleLogout } from "@/utils/auth";
 import { SessionContext } from "@/app/session/layout";
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function SideNavBar({
     collapsed,
     setCollapsed,
@@ -19,7 +21,7 @@ export default function SideNavBar({
     const fetchData = async () => {
         try {
             let response = await fetch(
-                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sessions`,
+                `${BACKEND_URL}/api/sessions`,
                 { headers: await getAuthHeader() }
             );
 
