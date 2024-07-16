@@ -8,8 +8,6 @@ import { useRouter } from "next/navigation";
 import { BACKEND_URL, getAuthHeader, handleLogout } from "@/utils/auth";
 import { SessionContext } from "@/app/session/layout";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
 export default function SideNavBar({
     collapsed,
     setCollapsed,
