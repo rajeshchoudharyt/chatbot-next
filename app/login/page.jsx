@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { handleLogin } from "@/utils/auth";
+import { BACKEND_URL, handleLogin } from "@/utils/auth";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -21,14 +21,11 @@ export default function Login() {
         let toastId = null;
 
         try {
-            let response = fetch(
-                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/local`,
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data),
-                }
-            );
+            let response = fetch(`${BACKEND_URL}/api/auth/local`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
             toastId = toast.loading("Validating...");
 
             response = await response;

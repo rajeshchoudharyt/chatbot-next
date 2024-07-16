@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import ChatWindow from "@/components/ChatWindow";
 
 import { useEffect, useState } from "react";
-import { getAuthHeader } from "@/utils/auth";
+import { BACKEND_URL, getAuthHeader } from "@/utils/auth";
 
 export default function Page({ params }) {
     const [conversations, setConversations] = useState([]);
@@ -13,7 +13,7 @@ export default function Page({ params }) {
     const fetchData = async () => {
         try {
             let response = fetch(
-                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/conversations/${params.id}`,
+                `${BACKEND_URL}/api/conversations/${params.id}`,
                 { headers: await getAuthHeader() }
             );
             toastId = toast.loading("Loading...", { id: toastId });

@@ -4,7 +4,7 @@ import ChatInput from "./ChatInput";
 
 import { useContext, useMemo } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { getAuthHeader } from "@/utils/auth";
+import { BACKEND_URL, getAuthHeader } from "@/utils/auth";
 import { SessionContext } from "@/app/session/layout";
 
 export default function ChatWindow({ conversations, setConversations }) {
@@ -15,7 +15,7 @@ export default function ChatWindow({ conversations, setConversations }) {
     const handleTerminate = async () => {
         try {
             let response = await fetch(
-                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sessions/${sessionId}`,
+                `${BACKEND_URL}/api/sessions/${sessionId}`,
                 { method: "PUT", headers: await getAuthHeader() }
             );
 

@@ -5,7 +5,7 @@ import ListItems from "./ListItems";
 
 import { useContext, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getAuthHeader, handleLogout } from "@/utils/auth";
+import { BACKEND_URL, getAuthHeader, handleLogout } from "@/utils/auth";
 import { SessionContext } from "@/app/session/layout";
 
 export default function SideNavBar({
@@ -18,10 +18,9 @@ export default function SideNavBar({
 
     const fetchData = async () => {
         try {
-            let response = await fetch(
-                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sessions`,
-                { headers: await getAuthHeader() }
-            );
+            let response = await fetch(`${BACKEND_URL}/api/sessions`, {
+                headers: await getAuthHeader(),
+            });
 
             if (!response.ok) throw response;
             response = await response.json();

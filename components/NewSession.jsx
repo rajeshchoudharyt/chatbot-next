@@ -3,7 +3,7 @@
 import toast from "react-hot-toast";
 
 import { useState } from "react";
-import { getAuthHeader } from "@/utils/auth";
+import { BACKEND_URL, getAuthHeader } from "@/utils/auth";
 
 export default function NewSession({ revalidateData }) {
     const [name, setName] = useState("");
@@ -16,17 +16,14 @@ export default function NewSession({ revalidateData }) {
         let toastId = null;
 
         try {
-            let response = fetch(
-                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sessions`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        ...(await getAuthHeader()),
-                    },
-                    body: JSON.stringify({ sessionName }),
-                }
-            );
+            let response = fetch(`${BACKEND_URL}/api/sessions`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(await getAuthHeader()),
+                },
+                body: JSON.stringify({ sessionName }),
+            });
             toastId = toast.loading("Validating...");
 
             response = await response;

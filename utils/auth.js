@@ -1,5 +1,8 @@
+const FRONTEND_URL = process.env.NEXT_PUBLIC_URL;
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 async function handleLogin(data) {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/session`, {
+    const response = await fetch(`${FRONTEND_URL}/api/session`, {
         method: "POST",
         body: JSON.stringify(data),
     });
@@ -7,14 +10,14 @@ async function handleLogin(data) {
 }
 
 async function handleLogout() {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/session`, {
+    const response = await fetch(`${FRONTEND_URL}/api/session`, {
         method: "DELETE",
     });
     return response.ok;
 }
 
 async function getToken() {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/session`);
+    const response = await fetch(`${FRONTEND_URL}/api/session`);
     if (!response.ok) return "";
 
     const user = await response.json();
@@ -30,4 +33,11 @@ async function getAuthHeader() {
     return { Authorization: `Bearer ${await getToken()}` };
 }
 
-export { handleLogin, handleLogout, getAuthHeader, isLoggedIn, getToken };
+export {
+    handleLogin,
+    handleLogout,
+    getAuthHeader,
+    isLoggedIn,
+    getToken,
+    BACKEND_URL,
+};
