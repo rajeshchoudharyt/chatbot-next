@@ -13,6 +13,6 @@ async function get() {
     });
 }
 
-get();
+await get();
 
 export { socket };
