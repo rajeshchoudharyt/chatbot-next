@@ -1,13 +1,13 @@
 let store = [];
 
+// Session start - Sign In
 export async function POST(request) {
     let data = await request.json();
-    const found = store.some(
-        (obj) =>
-            obj.jwt === data.jwt || obj.user.username === data.user.username
+    
+    const users = store.filter(
+        (obj) => obj.user.username !== data.user.username
     );
-
-    if (!found) store.push(data);
+    store = [...users, data];
 
     return new Response(null, {
         status: 200,
@@ -16,6 +16,7 @@ export async function POST(request) {
     });
 }
 
+// Session Stop - Sign Out
 export async function DELETE(request) {
     const token = request.cookies.get("token");
     store = store.filter((user) => user.jwt !== token);
