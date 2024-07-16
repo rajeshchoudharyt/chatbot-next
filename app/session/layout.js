@@ -2,9 +2,10 @@
 
 import SideNavBar from "@/components/SideNavBar";
 
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isLoggedIn } from "@/utils/auth";
+import { socket } from "@/utils/socket";
 
 export const SessionContext = createContext(null);
 
@@ -18,6 +19,12 @@ export default function SessionLayout({ children }) {
         if (await isLoggedIn()) setIsAuthenticated(true);
         else router.push("/login");
     }
+
+    // Socket initialization
+    const constructor = useMemo(async () => await socket, []);
+    useEffect(() => {
+        constructor;
+    }, []);
 
     useEffect(() => {
         checkStatus();
