@@ -61,7 +61,7 @@ export default function ChatWindow({ conversations, setConversations }) {
     return (
         <div className="flex h-full w-full">
             <div className="flex flex-col justify-between w-full gap-y-2">
-                {/* Session name */}
+                
                 <div className="flex justify-between items-center w-full py-2 pr-6 pl-16 sm:pl-6 bg-indigo-600 font-semibold">
                     <p className="text-white">{query.get("name")}</p>
                     {isActive ? (
@@ -75,7 +75,6 @@ export default function ChatWindow({ conversations, setConversations }) {
                     )}
                 </div>
 
-                {/* Chat content messages */}
                 {conversations && conversations.length > 0 ? (
                     <ChatContent conversations={conversations} />
                 ) : (
@@ -85,7 +84,6 @@ export default function ChatWindow({ conversations, setConversations }) {
                     </div>
                 )}
 
-                {/* Chat input */}
                 {isActive ? MemoizedChatInput : ""}
             </div>
         </div>
