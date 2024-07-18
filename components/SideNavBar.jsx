@@ -13,7 +13,7 @@ export default function SideNavBar({
     setCollapsed,
     setIsAuthenticated,
 }) {
-    const [sessions, setSessions] = useContext(SessionContext);
+    const [sessions, setSessions] = useContext(SessionContext).sessionState;
     const router = useRouter();
 
     const fetchData = async () => {
@@ -45,7 +45,6 @@ export default function SideNavBar({
     const handleClick = async () => {
         if (await handleLogout()) {
             setIsAuthenticated(false);
-            router.push("/login");
         } else toast.error("Something went wrong. Try again");
     };
 
@@ -53,7 +52,7 @@ export default function SideNavBar({
         <div className="bg-white">
             <div className="h-[92dvh]">
                 <Toggle collapsed={collapsed} setCollapsed={setCollapsed} />
-                <div className="overflow-hidden space-y-6">
+                <div className="overflow-hidden space-y-6 mt-4">
                     <NewSession revalidateData={fetchData} />
                     <ListItems
                         name={"Active Sessions"}

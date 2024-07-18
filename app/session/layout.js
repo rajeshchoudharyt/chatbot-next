@@ -2,40 +2,76 @@
 
 import SideNavBar from "@/components/SideNavBar";
 
-import { createContext, useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import { isLoggedIn } from "@/utils/auth";
-import { socket } from "@/utils/socket";
-
-export const SessionContext = createContext(null);
+import {
+    createContext,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
+import { initilizeSocket, socket } from "@/utils/socket";
+import { AuthContext } from "../page";
 
 export default function SessionLayout({ children }) {
+    const [isAuthenticated, setIsAuthenticated] = useContext(AuthContext);
     const [collapsed, setCollapsed] = useState(true);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [sessions, setSessions] = useState([]);
-    const router = useRouter();
+    const [isConnected, setIsConnected] = useState(false);
 
-    async function checkStatus() {
-        if (await isLoggedIn()) setIsAuthenticated(true);
-        else router.push("/login");
-    }
+    const isReadyToConnect = useRef(true);
+    const timeout = useRef(null);
 
-    // Socket initialization
-    const constructor = useMemo(async () => await socket, []);
-    useEffect(() => {
-        constructor;
+    // Startup - Socket initilization
+    useMemo(async () => {
+        await initilizeSocket();
+        await socket;
     }, []);
 
-    useEffect(() => {
-        checkStatus();
-    }, [isAuthenticated]);
+    const onConnect = () => {
+        console.log("connect");
+        isReadyToConnect.current = false;
+        setIsConnected(true);
+    };
 
-    if (!isAuthenticated) {
-        return null;
+    const onDisconnect = () => {
+        console.log("disconnect");
+        isReadyToConnect.current = true;
+        setIsConnected(false);
+    };
+
+    useEffect(() => {
+        setIsConnected(socket.connected);
+        socket.on("connect", onConnect);
+        socket.on("disconnect", onDisconnect);
+        return () => {
+            socket.off("connect", onConnect);
+            socket.off("disconnect", onDisconnect);
+            socket.disconnect();
+        };
+    }, []);
+
+    async function autoConnect() {
+        clearTimeout(timeout.current);
+        timeout.current = setTimeout(() => {
+            socket.disconnect();
+        }, 10000);
+
+        if (isReadyToConnect.current && !isConnected) {
+            isReadyToConnect.current = false;
+            socket.connect();
+        }
     }
 
+    if (!isAuthenticated) return null;
+
     return (
-        <SessionContext.Provider value={[sessions, setSessions]}>
+        <SessionContext.Provider
+            value={{
+                sessionState: [sessions, setSessions],
+                isConnected,
+                autoConnect,
+            }}>
             <div className="flex w-full h-dvh">
                 <section
                     className={`w-[80%] z-10 absolute sm:relative sm:w-1/3 transition-transform ease-in -translate-x-full sm:translate-x-0 ${
@@ -54,3 +90,5 @@ export default function SessionLayout({ children }) {
         </SessionContext.Provider>
     );
 }
+
+export const SessionContext = createContext(null);

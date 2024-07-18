@@ -2,26 +2,40 @@ const FRONTEND_URL = process.env.NEXT_PUBLIC_URL;
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 async function handleLogin(data) {
-    const response = await fetch(`${FRONTEND_URL}/api/session`, {
-        method: "POST",
-        body: JSON.stringify(data),
-    });
-    return response.ok;
+    try {
+        sessionStorage.setItem("token", data.jwt);
+        const response = await fetch(`${FRONTEND_URL}/api/session`, {
+            method: "POST",
+            body: JSON.stringify(data),
+        });
+        return response.ok;
+    } catch (err) {}
+    return false;
 }
 
 async function handleLogout() {
-    const response = await fetch(`${FRONTEND_URL}/api/session`, {
-        method: "DELETE",
-    });
-    return response.ok;
+    try {
+        sessionStorage.removeItem("token");
+        const response = await fetch(`${FRONTEND_URL}/api/session`, {
+            method: "DELETE",
+        });
+        return response.ok;
+    } catch (err) {}
+    return false;
 }
 
 async function getToken() {
-    const response = await fetch(`${FRONTEND_URL}/api/session`);
-    if (!response.ok) return "";
+    try {
+        const token = sessionStorage.getItem("token") || null;
+        if (token) return token;
 
-    const user = await response.json();
-    return user ? user.jwt : "";
+        const response = await fetch(`${FRONTEND_URL}/api/session`);
+        if (!response.ok) return "";
+
+        const user = await response.json();
+        return user ? user.jwt : "";
+    } catch (err) {}
+    return "";
 }
 
 async function isLoggedIn() {
@@ -30,6 +44,12 @@ async function isLoggedIn() {
 }
 
 async function getAuthHeader() {
+    let token = "";
+    try {
+        token = sessionStorage.getItem("token") || null;
+    } catch (err) {}
+
+    if (token) return { Authorization: `Bearer ${token}` };
     return { Authorization: `Bearer ${await getToken()}` };
 }
 

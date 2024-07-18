@@ -1,6 +1,7 @@
 import "./globals.css";
 
 import { Toaster } from "react-hot-toast";
+import Home from "./page";
 
 export const metadata = {
     title: "Chatbot demo",
@@ -30,7 +31,7 @@ export default function RootLayout({ children }) {
                         },
                     }}
                 />
-                {children}
+                <Home>{children}</Home>
             </body>
         </html>
     );

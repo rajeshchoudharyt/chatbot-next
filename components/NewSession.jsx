@@ -59,15 +59,15 @@ export default function NewSession({ revalidateData }) {
                 required
                 className="block w-full rounded-md border-0 px-3 py-1.5 shadow-sm 
 									ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 
-									focus:ring-1 focus:ring-inset sm:text-sm sm:leading-6"
+									focus:ring-1 focus:ring-inset leading-7"
             />
             <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 
-								text-xs font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 
+								text-sm font-semibold leading-7 text-white shadow-sm hover:bg-indigo-500 
 								focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
 								focus-visible:outline-indigo-600">
-                New Session
+                Create
             </button>
         </form>
     );

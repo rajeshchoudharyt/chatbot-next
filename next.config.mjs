@@ -1,9 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-    // reactStrictMode: false,
-    async redirects() {
-        return [{ source: "/", destination: "/session", permanent: true }];
-    },
-};
+const nextConfig = {};
 
 export default nextConfig;

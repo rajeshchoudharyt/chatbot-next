@@ -12,6 +12,7 @@ export default function Page({ params }) {
 
     const fetchData = async () => {
         try {
+            console.log(document.cookie);
             let response = fetch(
                 `${BACKEND_URL}/api/conversations/${params.id}`,
                 { headers: await getAuthHeader() }

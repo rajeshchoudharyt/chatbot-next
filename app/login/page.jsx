@@ -3,13 +3,15 @@
 import Link from "next/link";
 import toast from "react-hot-toast";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BACKEND_URL, handleLogin } from "@/utils/auth";
+import { AuthContext } from "../page";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isAuthenticated, setIsAuthenticated] = useContext(AuthContext);
     const router = useRouter();
 
     const handleSubmit = async (event) => {
@@ -36,6 +38,7 @@ export default function Login() {
                 return toast.error("Something went wrong.", { id: toastId });
 
             toast.success("Success", { id: toastId });
+            setIsAuthenticated(true);
             router.replace("/");
 
             //
@@ -51,10 +54,10 @@ export default function Login() {
     };
 
     return (
-        <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+        <div className="flex min-h-full flex-col px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                    Sign In
+                    Login
                 </h2>
             </div>
 
@@ -76,7 +79,7 @@ export default function Login() {
                                 required
                                 className="block w-full rounded-md border-0 px-3 py-1.5 shadow-sm 
 									ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 
-									focus:ring-1 focus:ring-inset sm:text-sm sm:leading-6"
+									focus:ring-1 focus:ring-inset leading-7"
                             />
                         </div>
                     </div>
@@ -97,7 +100,7 @@ export default function Login() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 className="block w-full rounded-md border-0 px-3 py-1.5 shadow-sm 
 									ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 
-									focus:ring-1 focus:ring-inset sm:text-sm sm:leading-6"
+									focus:ring-1 focus:ring-inset leading-7"
                             />
                         </div>
                     </div>
@@ -106,10 +109,10 @@ export default function Login() {
                         <button
                             type="submit"
                             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 
-								text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 
+								text-sm font-semibold leading-7 text-white shadow-sm hover:bg-indigo-500 
 								focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 
 								focus-visible:outline-indigo-600">
-                            Sign In
+                            Login
                         </button>
                     </div>
                 </form>

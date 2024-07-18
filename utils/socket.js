@@ -5,13 +5,14 @@ import { BACKEND_URL, getToken } from "./auth";
 
 let socket = null;
 
-async function get() {
+async function initilizeSocket() {
     const token = await getToken();
     socket = io(`${BACKEND_URL}`, {
         autoConnect: false,
         auth: { token },
     });
 }
-get();
 
-export { socket };
+initilizeSocket();
+
+export { socket, initilizeSocket };
