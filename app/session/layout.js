@@ -23,25 +23,23 @@ export default function SessionLayout({ children }) {
     const timeout = useRef(null);
 
     // Startup - Socket initilization
-    useMemo(async () => {
+    const initilize = useMemo(async () => {
         await initilizeSocket();
         await socket;
     }, []);
 
     const onConnect = () => {
-        console.log("connect");
         isReadyToConnect.current = false;
         setIsConnected(true);
     };
 
     const onDisconnect = () => {
-        console.log("disconnect");
         isReadyToConnect.current = true;
         setIsConnected(false);
     };
 
     useEffect(() => {
-        setIsConnected(socket.connected);
+        initilize;
         socket.on("connect", onConnect);
         socket.on("disconnect", onDisconnect);
         return () => {
