@@ -39,7 +39,7 @@ export default function SessionLayout({ children }) {
     };
 
     useEffect(() => {
-        initilize;
+        if (!socket) initilize;
         socket.on("connect", onConnect);
         socket.on("disconnect", onDisconnect);
         return () => {
@@ -53,7 +53,7 @@ export default function SessionLayout({ children }) {
         clearTimeout(timeout.current);
         timeout.current = setTimeout(() => {
             socket.disconnect();
-        }, 10000);
+        }, 1000*60*2);
 
         if (isReadyToConnect.current && !isConnected) {
             isReadyToConnect.current = false;
